@@ -1,1 +1,115 @@
+//  question 1
+class Solution {
+public:
+    bool divideArray(vector<int>& nums) {
+        unordered_map<int,int>m;
+        for(int i=0;i<nums.size();i++){
+            m[nums[i]]++;
+        }
+        for(auto it:m){
+            if(it.second%2!=0)return false;
+        }
+        return true;
+    }
+};
 
+//question 2
+class Solution {
+public:
+    long long maximumSubsequenceCount(string text, string patt) {
+        long long cnt1=0,cnt2=0;
+        stack<char>st;
+        int n=text.size();
+        for(int i=n-1;i>=0;i--){
+            if(text[i]==patt[1]){
+                st.push(text[i]);
+            }
+            else if(text[i]==patt[0]){
+                cnt1+=st.size();
+            }
+        }
+        cnt1+=st.size();
+        stack<char>st2;
+        for(int i=0;i<n;i++){
+            if(text[i]==patt[0]){
+                st2.push(text[i]);
+            }
+            else if(text[i]==patt[1]){
+                cnt2+=st2.size();
+            }
+        }
+        cnt2+=st2.size();
+        cnt1=max(cnt1,cnt2);
+        if(patt[0]==patt[1])return cnt1*(cnt1+1)/2;
+        
+        return cnt1;
+    }
+};
+
+//question 3
+class Solution {
+public:
+    int halveArray(vector<int>& nums) {
+        double sum=0;
+        for(int i=0;i<nums.size();i++){
+            sum+=nums[i];
+        }
+        sum=sum/2.0;
+        priority_queue<double>pq;
+        for(int i=0;i<nums.size();i++){
+            pq.push(nums[i]);
+        }
+        int cnt=0;
+        while(sum>0){
+            double x=pq.top();
+            pq.pop();
+            x=x/2.0;
+            sum-=x;
+            pq.push(x);
+            cnt++;
+        }
+        return cnt;
+    }
+};
+
+//question 4
+class Solution {
+public:
+    int minimumWhiteTiles(string floor, int num, int len) {
+        priority_queue<int>pq;
+        
+        int n=floor.size();
+        if(num*len>=n)return 0;
+        for(int i=0;i<n;i++){
+            if(floor[i]=='1'){
+                int cnt=1;
+                int j=i+1;
+                while(j<n && floor[j]=='1'){
+                    cnt++;
+                    j++;
+                }
+                pq.push(cnt);
+                i=j;
+            }
+        }
+        while(num>0 && !pq.empty()){
+            int x=pq.top();
+            pq.pop();
+            if(x>len){
+                x=x-len;
+                num--;
+                pq.push(x);
+            }
+            else{
+                num--;
+            }
+        }
+        int sum=0;
+        if(pq.empty())return 0;
+        while(!pq.empty()){
+            sum+=pq.top();
+            pq.pop();
+        }
+        return sum;
+    }
+};

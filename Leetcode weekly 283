@@ -1,1 +1,50 @@
+// question 1
+class Solution {
+public:
+    vector<string> cellsInRange(string s) {
+        vector<string>v;
+        int colstart=int(s[0]-'A');
+        int colend=int(s[3]-'A');
+        int rowstart=int(s[1]);
+        int rowend=int(s[4]);
+        for(int i=colstart;i<=colend;i++){
+            char x=char(i+65);
+            string s="";
+            s.push_back(x);
+            for(int j=rowstart;j<=rowend;j++){
+                s.push_back(j);
+                v.push_back(s);
+                s.pop_back();
+            }
+            s="";
+        }
+        return v;
+    }
+};
+
+//question 2
+#define ll long long
+class Solution {
+public:
+    long long minimalKSum(vector<int>& v, int k) {
+   
+        set<int> st;
+        for(auto it : v) st.insert(it);
+        ll l = 1, sum = 0, r;
+        for(auto it : st) {
+            r = it;
+            if(k > (r-l)) k -= (r-l);     // If k is greater than (r-l) we will take all the elements between (r, l)
+            else break;                   // Else we will break our loop
+            
+            sum += (r*(r-1))/2 - (l*(l-1))/2; // Adding sum of (r-l) elements into our answer
+            l = r+1;                      // Updating l
+        }
+        
+        r = l+k;       // Taking all the remaining elements if anyone
+        sum += (r*(r-1))/2 - (l*(l-1))/2;
+        return sum;
+    }
+};
+
+//question 3
 
